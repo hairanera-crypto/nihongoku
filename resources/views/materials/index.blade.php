@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('title', 'Materi Belajar | NihongoLearn')
+@section('content')
+<div class="page-wrap"><div class="page-heading"><div><span class="section-index">RUANG BELAJAR</span><h1>Materi pembelajaran</h1><p>@if($search !== '')Hasil pencarian untuk “{{ $search }}”.@elseif($category)Materi kategori {{ $category }}.@else Pilih satu topik dan mulai dari dasar.@endif</p></div><a class="btn btn-primary px-4 py-2" href="{{ route('quiz.index') }}">Mulai latihan ↗</a></div>
+@if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
+<div class="material-grid">@forelse($materials as $material)<a class="material-card" href="{{ route('materials.show', $material) }}"><span class="category-label">{{ $material->category }}</span>@if(in_array($material->id, $completedMaterialIds, true))<span class="material-complete-label">✓ Selesai</span>@endif<h2>{{ $material->title }}</h2><p>{{ \Illuminate\Support\Str::limit(strip_tags($material->content), 100) }}</p><span class="card-arrow">{{ in_array($material->id, $completedMaterialIds, true) ? 'Ulangi materi ↗' : 'Baca materi ↗' }}</span></a>@empty<div class="content-panel"><h2 class="h5">Materi tidak ditemukan</h2><p class="mb-0 text-secondary">Coba kata kunci atau kategori yang berbeda.</p></div>@endforelse</div><div class="mt-4">{{ $materials->links() }}</div></div>
+@endsection
